@@ -48,13 +48,18 @@ spAppendScalaVersion := true
 
 spIncludeMaven := true
 
+
+//For Publishing on Factual Maven
+
 publishTo := {
-  val nexus = "https://oss.sonatype.org/"
-  if (version.value.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "content/repositories/snapshots")
+  val nexus = "http://maven.corp.factual.com/nexus/"
+  if (isSnapshot.value)
+    Some("Factual Snapshots" at nexus + "content/repositories/snapshots")
   else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    Some("Factual Releases" at nexus + "content/repositories/releases")
 }
+
+credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
 
 pomExtra := (
   <url>https://github.com/harsha2010/magellan</url>
@@ -85,8 +90,6 @@ ScoverageSbtPlugin.ScoverageKeys.coverageHighlighting := {
   if (scalaBinaryVersion.value == "2.10") false
   else true
 }
-
-credentials += Credentials(Path.userHome / ".ivy2" / ".sbtcredentials")
 
 licenses += "Apache-2.0" -> url("http://opensource.org/licenses/Apache-2.0")
 
